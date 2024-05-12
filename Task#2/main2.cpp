@@ -61,11 +61,11 @@ public:
             managers.push_back(Manager(value, name));
         }
     }
-    int getCountComand()
+    int GetCountComand()
     {
         return managers.size();
     }
-    int getCountWorkers(int inI)
+    int GetCountWorkers(int inI)
     {
         return managers[inI].workers.size();
     }
@@ -81,21 +81,45 @@ public:
             }
         }
     }
+    bool GetAvailableComands()
+    {
+        for (int i = 0; i < managers.size(); i++)
+        {
+            for (int j = 0; j < managers[i].workers.size(); j++)
+            {
+                if (managers[i].workers[j].task == 0)
+                    return true;
+            }
+        }
+        return false;
+    }
+    bool GetAvailableWorkers(int inI)
+    {
+        for (int j = 0; j < managers[inI].workers.size(); j++)
+        {
+            if (managers[inI].workers[j].task == 0)
+                return true;
+        }
+        return false;
+    }
 };
 
 int main()
 {
     CEO ceo = CEO();
-    while (true)
+    while (ceo.GetAvailableComands())
     {
-        for (int i = 0; i < ceo.getCountComand(); i++)
+        for (int i = 0; i < ceo.GetCountComand(); i++)
         {
-            std::cout << "Enter value: ";
-            int hash;
-            std::cin >> hash;
-            std::srand(hash + i);
-            int tasksCount = rand() % (ceo.getCountWorkers(i) + 1);
-            ceo.receivingTasks(tasksCount, i);
+            if (ceo.GetAvailableWorkers(i))
+            {
+                std::cout << "Enter value: ";
+                int hash;
+                std::cin >> hash;
+                std::srand(hash + i);
+                int tasksCount = rand() % (ceo.GetCountWorkers(i) + 1);
+                ceo.receivingTasks(tasksCount, i);
+            }
         }
     }
 }
