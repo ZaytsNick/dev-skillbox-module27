@@ -34,72 +34,44 @@ public:
             }
         }
     }
-    // Branch getParentBranch(Branch *parentBranch)
-    // {
-    //     if (parent == parentBranch)
-    //         return *this;
-    //     for (int i = 0; i < branch.size(); i++)
-    //     {
-    //         if (&branch[i] == parentBranch)
-    //             return branch[i];
-    //     }
-    // }
-    Branch searchElf(std::string searchingName)
+    Branch getParentBranch(std::string searchName)
     {
-        if (parent == nullptr) // Если это дерево
+        // Если это дерево
+        if (parent == nullptr)
         {
             for (int i = 0; i < branch.size(); i++)
             {
-                if (branch[i].searchElf(searchingName) != nullptr)
+                if (branch[i].nameElf == searchName)
                     return branch[i];
-            }
-        }
-        else if (parent->parent == nullptr) // Если это средняя ветка
-        {
-            if (searchingName == nameElf)
-                return *this;
-            else
-            {
-                for (int i = 0; i < branch.size(); i++)
+                else
                 {
-                    if (branch[i].searchElf(searchingName) != nullptr)
-                    {
-                        return *this;
-                    }
-                    else
-                        return nullptr;
+                    Branch temp = branch[i].getParentBranch(searchName);
+                    if (temp.parent == branch[i].parent)
+                        return branch[i];
                 }
             }
         }
-        else // Если это маленькая ветка
+        // Если это средняя ветка
+        else if (parent->parent == nullptr)
         {
-            if (searchingName == nameElf)
-                return;
-            else
-                return nullptr;
+            for (int i = 0; i < branch.size(); i++)
+            {
+                if (branch[i].nameElf == searchName)
+                    return *this;
+            }
+            return branch[0];
         }
+        return *this;
+        // Если это маленькая ветка
+        // return parent->getParentBranch();
     }
-    int countNeighbours()
-    {
-        std::string search;
-        std::cin >> search;
-        Branch parentBranch;
-        parentBranch = searchElf(search);
-        int count = -1;
-        parentBranch.nameElf != "None" ? count++ : 0;
-        // std::cout << "parentBranch->branch.size()"; // parentBranch.nameElf;
-        for (int i = 0; i < parentBranch.branch.size(); i++)
-        {
-            parentBranch.branch[i].nameElf != "None" ? count++ : 0;
-        }
-        return count;
-    }
+    
 };
+
 int main()
 {
     Branch tree;
     tree.setTree();
-    int count = tree.countNeighbours();
-    std::cout << "Count neighbours: " << count;
-    // tree.getTree();
+    std::string name = "41";
+    tree.getParentBranch(name);
 }
