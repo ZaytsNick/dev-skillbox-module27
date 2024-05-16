@@ -65,13 +65,27 @@ public:
         // Если это маленькая ветка
         // return parent->getParentBranch();
     }
-    
+    int countNeighbours(Branch parentBranch)
+    {
+        assert(parentBranch.parent != nullptr);
+
+        int count = -1;
+        parentBranch.nameElf != "None" ? count++ : 0;
+        for (int i = 0; i < parentBranch.branch.size(); i++)
+        {
+            parentBranch.branch[i].nameElf != "None" ? count++ : 0;
+        }
+        return count;
+    }
 };
 
 int main()
 {
     Branch tree;
     tree.setTree();
-    std::string name = "41";
-    tree.getParentBranch(name);
+
+    std::string searchName;
+    std::cout << "Enter search name: ";
+    std::cin >> searchName;
+    std::cout << "Count neighbours: " << tree.countNeighbours(tree.getParentBranch(searchName));
 }
