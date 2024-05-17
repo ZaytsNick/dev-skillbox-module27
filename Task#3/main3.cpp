@@ -67,7 +67,10 @@ public:
     }
     int countNeighbours(Branch parentBranch)
     {
-        assert(parentBranch.parent != nullptr);
+        if (parentBranch.parent == nullptr)
+        {
+            return -2;
+        }
 
         int count = -1;
         parentBranch.nameElf != "None" ? count++ : 0;
@@ -81,11 +84,19 @@ public:
 
 int main()
 {
-    Branch tree;
-    tree.setTree();
+    Branch tree[5];
+    for (int i = 0; i < tree.size())
+    {
+        tree.setTree();
 
-    std::string searchName;
-    std::cout << "Enter search name: ";
-    std::cin >> searchName;
-    std::cout << "Count neighbours: " << tree.countNeighbours(tree.getParentBranch(searchName));
+        std::string searchName;
+        std::cout << "Enter search name: ";
+        std::cin >> searchName;
+        int count = tree.countNeighbours(tree.getParentBranch(searchName));
+        if (count != -2)
+        {
+            std::cout << "Count neighbours: " << count;
+            break;
+        }
+    }
 }
