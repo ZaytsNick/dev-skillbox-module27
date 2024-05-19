@@ -11,23 +11,23 @@ class Branch
     std::vector<Branch> branch;
 
 public:
-    void setTree()
+    void setTree(int trash)
     {
         for (int i = 0; i < rand() % 5 + 3; i++)
         {
-            std::cout << "Parent Branch #" << i + 1 << std::endl;
+            // std::cout << "Parent Branch #" << i + 1 << std::endl;
             Branch temp;
             // std::cout << "Enter name elf: ";
-            temp.nameElf = std::to_string(i + 1);
+            temp.nameElf = std::to_string(trash) + std::to_string(i + 1);
             // std::cin >> temp.nameElf;
             temp.parent = this;
             branch.push_back(temp);
             for (int j = 0; j < rand() % 3 + 2; j++)
             {
-                std::cout << "Child Branch #" << j + 1 << std::endl;
+                // std::cout << "Child Branch #" << j + 1 << std::endl;
                 Branch tmp;
                 // std::cout << "Enter name elf: ";
-                tmp.nameElf = std::to_string(i + 1) + std::to_string(j + 1);
+                tmp.nameElf = std::to_string(trash) + std::to_string(i + 1) + std::to_string(j + 1);
                 // std::cin >> tmp.nameElf;
                 tmp.parent = &branch[i];
                 branch[i].branch.push_back(tmp);
@@ -85,14 +85,16 @@ public:
 int main()
 {
     Branch tree[5];
-    for (int i = 0; i < tree.size())
+    for (int i = 0; i < sizeof(tree) / sizeof(Branch); i++)
     {
-        tree.setTree();
-
-        std::string searchName;
-        std::cout << "Enter search name: ";
-        std::cin >> searchName;
-        int count = tree.countNeighbours(tree.getParentBranch(searchName));
+        tree[i].setTree(i + 1);
+    }
+    std::string searchName;
+    std::cout << "Enter search name: ";
+    std::cin >> searchName;
+    for (int i = 0; i < sizeof(tree) / sizeof(Branch); i++)
+    {
+        int count = tree[i].countNeighbours(tree[i].getParentBranch(searchName));
         if (count != -2)
         {
             std::cout << "Count neighbours: " << count;
